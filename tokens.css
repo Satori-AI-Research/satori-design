@@ -1,0 +1,69 @@
+/**
+ * Satori Design Tokens
+ *
+ * Core design variables shared across all Satori products.
+ * Import this file first, then components.css
+ */
+
+:root {
+  /* ===== COLORS ===== */
+
+  /* Backgrounds */
+  --color-background-primary: white;
+  --color-background-secondary: #dae5f3;
+  --color-background-tertiary: #7d7a98;
+  --color-background-grey: #d4cfcf;
+  --color-background-dark: #203148;
+  --color-background-beige: #eddbc8;
+
+  /* Text */
+  --color-text-primary: #203148;
+  --color-text-secondary: #515151;
+  --color-text-primary-dark: white;
+  --color-text-secondary-dark: rgb(220, 220, 220);
+
+  /* Accent - single accent color throughout */
+  --color-accent: #2584fa;
+
+  /* Buttons */
+  --color-button-primary-bg: #2584fa;
+  --color-button-primary-text: white;
+
+  /* UI Elements */
+  --color-border-light: #d1d5db;
+  --color-error: #ef4444;
+  --color-label: #6b7280;
+
+  /* Aliases */
+  --accent-color: var(--color-accent);
+  --background-primary-rgb: 255, 255, 255;
+
+  /* ===== TYPOGRAPHY ===== */
+
+  /* Font Families - consumers must load these fonts */
+  --font-heading: "Poppins", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --font-mono: "Source Code Pro", monospace;
+  --font-logo: "Poppins", sans-serif;
+
+  /* ===== SPACING ===== */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+
+  /* ===== BORDERS ===== */
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  --border-radius-xl: 1rem;
+  --border-radius-full: 9999px;
+
+  /* ===== TRANSITIONS ===== */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
