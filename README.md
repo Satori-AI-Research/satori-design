@@ -45,3 +45,4 @@ git submodule update --remote
 ## Philosophy
 
 **Zen, minimal, inviting.** See `DESIGN_SYSTEM.md` for the full guide.
+# satori-design
