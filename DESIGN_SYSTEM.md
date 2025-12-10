@@ -125,7 +125,27 @@ Use for: landing pages, empty states, project detail pages - anywhere we want th
 ```
 - Minimal underline style (no borders, transparent bg)
 - Bottom border only, thickens + turns accent on focus
-- Labels are monospace, uppercase, above the field
+- Labels: simple gray text above, NOT monospace uppercase (save that for section markers)
+
+**Boxed variant** (for date pickers, selects - where underline doesn't work):
+```html
+<input type="date" class="input-boxed" />
+```
+
+### Chip/Tag Input Pattern
+For multi-value inputs (tags, subreddits, etc.):
+```html
+<input placeholder="Type and press Enter" class="input-field" />
+<div class="flex flex-wrap gap-2 mt-3">
+  <span class="label flex items-center gap-2">
+    Tag name
+    <button class="hover:text-accent"><X size={12} /></button>
+  </span>
+</div>
+```
+- Input for adding, chips display below
+- Chips use `.label` class with X button to remove
+- Enter key to add, no separate "Add" button needed
 
 ### Status Indicators
 Just use text color, not colored badges:
@@ -137,6 +157,66 @@ Just use text color, not colored badges:
 ---
 
 ## Patterns
+
+### Multi-Step Wizards / Forms
+
+**Philosophy:** Forms should feel like a conversation, not paperwork. One question at a time. No chrome.
+
+**Structure:**
+```html
+<div class="min-h-screen hero-gradient flex flex-col">
+  <!-- Minimal header: just logo, links back to exit -->
+  <header>
+    <Logo opacity-60 hover:opacity-100 />
+  </header>
+
+  <!-- Centered content -->
+  <main class="flex-1 flex items-center justify-center">
+    <div class="max-w-xl">
+      <!-- Context breadcrumb (what they've entered so far) -->
+      <p class="text-gray-400 font-mono text-sm uppercase tracking-wider mb-4">
+        Project Name
+      </p>
+
+      <!-- Question as heading -->
+      <h1 class="heading-1 mb-8">
+        What are you<br />trying to learn?
+      </h1>
+
+      <!-- Single input -->
+      <input class="input-field text-lg mb-12" />
+
+      <!-- Navigation -->
+      <div class="flex justify-between">
+        <button class="text-gray-400 hover:text-gray-600 font-mono text-sm uppercase">Back</button>
+        <button class="link-arrow">Continue →</button>
+      </div>
+    </div>
+  </main>
+</div>
+```
+
+**Key principles:**
+- Full-screen with `hero-gradient` background (same calm feel as landing/dashboard)
+- One question per screen when possible
+- Question IS the heading (conversational, e.g. "What should we call this project?")
+- Context breadcrumb shows what they've already entered (project name in gray mono)
+- No step indicators (1 of 5) - feels bureaucratic
+- "Continue" not "Next" - forward momentum
+- "Skip" for optional fields, shows they can move on
+- Back button is subtle gray, not a link-arrow
+
+**Choice cards** (when offering options):
+```html
+<button class="w-full text-left p-6 bg-white/60 backdrop-blur-sm rounded-xl
+               border border-transparent hover:border-accent transition-all group">
+  <h3 class="heading-4 mb-2 group-hover:text-accent">Option title</h3>
+  <p class="body-text-sm">Description of what this does.</p>
+</button>
+```
+- Glassmorphism cards (`bg-white/60 backdrop-blur-sm`)
+- Invisible border until hover
+- Title highlights on hover
 
 ### Empty States
 Center the content. Make it feel like an invitation, not an error.
