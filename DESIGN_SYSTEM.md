@@ -57,13 +57,14 @@
 .body-text-sm → Secondary text (0.875rem)
 ```
 
-**Labels/Pills:**
+**Tags:**
 ```html
-<span class="label">Draft</span>
+<span class="tag">Draft</span>
 ```
-- Monospace, uppercase, small
-- Bordered pill style
-- Use for: status badges, categories, tags, section markers
+- Monospace, uppercase, small (12px)
+- Subtle border, slightly rounded (4px) - NOT pill-shaped
+- Use for: status badges, categories, metadata labels, section markers
+- Keep it understated - tags are metadata, not the main content
 
 ---
 
@@ -88,26 +89,44 @@ Use for: landing pages, empty states, project detail pages - anywhere we want th
 
 ## Components
 
-### Links (Primary interaction)
+### Interactive Elements (Actions vs Navigation)
+
+**When to use what:**
+
+| Element | Use for | Examples |
+|---------|---------|----------|
+| `.link-arrow` | Navigation (going somewhere) | "View project →", "Back to dashboard" |
+| `.btn-primary` | Primary action (doing something) | "Start Scrape", "Create Project", "Save" |
+| `.btn-secondary` | Secondary action | "Cancel", "Skip", "Export" |
+| `.tag` | Informational labels (not interactive) | Status badges, categories, metadata |
+
+### Links (Navigation)
 ```html
 <a class="link-arrow gap-2">
-  Action <ArrowRight size={16} />
+  View Details <ArrowRight size={16} />
 </a>
 ```
 - Monospace, uppercase, tracking-wider
 - Black at rest, accent blue on hover
 - Often paired with arrow icon
-- **Preferred over buttons** for most CTAs
+- **Use for navigation** - going to another page/view
 
-### Buttons (Secondary)
+### Buttons (Actions)
 ```html
-<button class="btn-primary">Submit</button>
+<button class="btn-primary">Start Scrape</button>
 <button class="btn-secondary">Cancel</button>
 ```
-- Reserve for form submissions or destructive actions
-- Pill-shaped (rounded-full)
+- **Use for actions** - triggering operations, form submissions, state changes
+- Slightly rounded (4px) - NOT pill-shaped
 - Primary: blue fill → outline on hover
-- Secondary: outline → fill on hover
+- Secondary: subtle border → darker border on hover
+
+**Disabled state:**
+```html
+<button class="btn-primary opacity-50 cursor-not-allowed pointer-events-none" disabled>
+  Loading...
+</button>
+```
 
 ### Cards
 ```html
@@ -132,19 +151,19 @@ Use for: landing pages, empty states, project detail pages - anywhere we want th
 <input type="date" class="input-boxed" />
 ```
 
-### Chip/Tag Input Pattern
+### Tag Input Pattern
 For multi-value inputs (tags, subreddits, etc.):
 ```html
 <input placeholder="Type and press Enter" class="input-field" />
 <div class="flex flex-wrap gap-2 mt-3">
-  <span class="label flex items-center gap-2">
+  <span class="tag flex items-center gap-2">
     Tag name
     <button class="hover:text-accent"><X size={12} /></button>
   </span>
 </div>
 ```
-- Input for adding, chips display below
-- Chips use `.label` class with X button to remove
+- Input for adding, tags display below
+- Tags use `.tag` class with X button to remove
 - Enter key to add, no separate "Add" button needed
 
 ### Status Indicators
@@ -241,8 +260,24 @@ Simple. Label + big title. Maybe a subtitle.
 
 ### Navigation
 - Navbar: Logo left, minimal actions right
-- Back navigation: Subtle arrow integrated with logo, not a separate link
 - No heavy nav menus - keep it minimal
+
+**Back navigation pattern:**
+- Subtle arrow, never a full "← Back to X" text link
+- Arrow floats in the **left margin**, content stays flush:
+  ```html
+  <div class="flex">
+    <Link href="/back" class="-ml-8 mr-4 mt-1 text-gray-300 hover:text-accent">
+      <ArrowLeft size={16} />
+    </Link>
+    <div>
+      <span class="tag">Label</span>
+      <h1 class="heading-1 mt-4">Title</h1>
+    </div>
+  </div>
+  ```
+- This keeps content alignment consistent between list and detail pages
+- On centered/hero pages, arrow can go next to logo in header instead
 
 ### Data Display
 Simple key-value rows, not boxed cards:
@@ -255,16 +290,99 @@ Simple key-value rows, not boxed cards:
 
 ---
 
+## Border Radius
+
+Keep it subtle and consistent. We're not doing the 2010s "pill button" look.
+
+```
+--border-radius-sm: 4px   → tags, buttons, inputs
+--border-radius-md: 8px   → small cards
+--border-radius-lg: 12px  → cards
+--border-radius-xl: 16px  → large cards, modals
+--border-radius-full      → circles ONLY (avatars, close buttons)
+```
+
+**Rule:** If it's not a circle, don't use `rounded-full`.
+
+---
+
+## Performance & Navigation
+
+**Overlays use state, not routes.**
+
+When something opens as a full-screen overlay (wizard, modal, lightbox), use React state - not a separate page/route.
+
+```tsx
+// ✅ Good - instant open/close
+const [showWizard, setShowWizard] = useState(false);
+{showWizard && <Wizard onClose={() => setShowWizard(false)} />}
+
+// ❌ Bad - triggers page navigation, server fetch, slow
+router.push("/dashboard/new");
+```
+
+**Why:** Next.js page navigation triggers server-side data fetching, even with client components. A simple `useState` toggle is instant because no navigation occurs - the overlay just renders on top.
+
+**Rule:** If the underlying page should stay loaded (dashboard behind a wizard), don't navigate away from it.
+
+---
+
+## Loading States
+
+**Principle:** Skeleton only what's dynamic. Static content renders immediately.
+
+| Content Type | Loading Behavior |
+|--------------|------------------|
+| Navbar | Render immediately (static) |
+| Page titles/headers | Render immediately (static) |
+| Section labels ("DATA CONFIG", "PROJECT INFO") | Render immediately (static) |
+| Buttons/actions | Render immediately, disabled state |
+| Filters/search | Render immediately, disabled state |
+| Table headers | Render immediately (static) |
+| **DB data** (names, values, lists) | **Skeleton** |
+
+**Skeleton pattern:**
+```html
+<div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
+```
+- Use `bg-gray-200` for skeleton blocks
+- Add `animate-pulse` for subtle animation
+- Match approximate dimensions of real content
+
+**Example - list page loading:**
+```tsx
+// ✅ Good - static shell with data skeletons
+<Navbar />
+<h1>All Projects</h1>  {/* static */}
+<SearchInput disabled />  {/* static, disabled */}
+<table>
+  <thead>...</thead>  {/* static headers */}
+  <tbody>
+    {[...Array(5)].map(i => <SkeletonRow />)}  {/* skeleton rows */}
+  </tbody>
+</table>
+
+// ❌ Bad - everything is skeleton
+<SkeletonNavbar />
+<SkeletonTitle />
+<SkeletonFilters />
+<SkeletonTable />
+```
+
+---
+
 ## Don'ts
 
 - ❌ Heavy borders and shadows
 - ❌ Multiple accent colors
+- ❌ Pill-shaped buttons (rounded-full on rectangles)
 - ❌ Crowded layouts with lots of sections
 - ❌ Empty placeholder sections (hide until there's content)
-- ❌ ALL CAPS for headings (only for labels/pills)
+- ❌ ALL CAPS for headings (only for tags)
 - ❌ Complex multi-column layouts when single column works
 - ❌ Buttons when links would do
 - ❌ Generic "Submit" / "Cancel" - be specific
+- ❌ Page routes for overlays/modals (use state instead)
 
 ## Do's
 

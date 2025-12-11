@@ -138,8 +138,22 @@
   font-weight: 300;
 }
 
-/* ===== LABELS / PILLS ===== */
+/* ===== TAGS ===== */
+/* Use for: status badges, categories, metadata labels, section markers */
 
+.tag {
+  font-family: var(--font-mono);
+  color: var(--color-text-primary);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--border-radius-sm);
+  display: inline-block;
+}
+
+/* Alias for backwards compatibility */
 .label {
   font-family: var(--font-mono);
   color: var(--color-text-primary);
@@ -147,8 +161,8 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 0.25rem 0.75rem;
-  border: 1px solid currentColor;
-  border-radius: var(--border-radius-full);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--border-radius-sm);
   display: inline-block;
 }
 
@@ -163,6 +177,7 @@
   font-size: 0.875rem;
   letter-spacing: 0.05em;
   transition: color var(--transition-normal);
+  cursor: pointer;
 }
 .link-arrow:hover {
   color: var(--color-accent);
@@ -173,7 +188,7 @@
 .btn-primary {
   font-family: var(--font-mono);
   padding: 0.75rem 1.5rem;
-  border-radius: var(--border-radius-full);
+  border-radius: var(--border-radius-sm);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -183,7 +198,8 @@
   transition: all var(--transition-normal);
   background-color: var(--color-button-primary-bg);
   color: var(--color-button-primary-text);
-  border: 2px solid transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
 }
 .btn-primary:hover {
   background-color: transparent;
@@ -194,7 +210,7 @@
 .btn-secondary {
   font-family: var(--font-mono);
   padding: 0.75rem 1.5rem;
-  border-radius: var(--border-radius-full);
+  border-radius: var(--border-radius-sm);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -204,11 +220,11 @@
   transition: all var(--transition-normal);
   background-color: transparent;
   color: var(--color-text-primary);
-  border: 2px solid var(--color-text-primary);
+  border: 1px solid var(--color-border-light);
+  cursor: pointer;
 }
 .btn-secondary:hover {
-  background-color: var(--color-text-primary);
-  color: white;
+  border-color: var(--color-text-primary);
 }
 
 /* ===== CARDS ===== */

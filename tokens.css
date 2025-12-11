@@ -56,11 +56,11 @@
   --spacing-3xl: 4rem;
 
   /* ===== BORDERS ===== */
-  --border-radius-sm: 0.25rem;
-  --border-radius-md: 0.5rem;
-  --border-radius-lg: 0.75rem;
-  --border-radius-xl: 1rem;
-  --border-radius-full: 9999px;
+  --border-radius-sm: 0.25rem;   /* 4px - tags, buttons, inputs */
+  --border-radius-md: 0.5rem;    /* 8px - small cards */
+  --border-radius-lg: 0.75rem;   /* 12px - cards */
+  --border-radius-xl: 1rem;      /* 16px - large cards, modals */
+  --border-radius-full: 9999px;  /* circles only - avatars, close buttons */
 
   /* ===== TRANSITIONS ===== */
   --transition-fast: 0.15s ease;
