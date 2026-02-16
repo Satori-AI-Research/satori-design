@@ -9,12 +9,9 @@
   /* ===== COLORS ===== */
 
   /* Backgrounds */
-  --color-background-primary: white;
+  --color-background-primary: #FAFAF8;
   --color-background-secondary: #dae5f3;
-  --color-background-tertiary: #7d7a98;
-  --color-background-grey: #d4cfcf;
   --color-background-dark: #203148;
-  --color-background-beige: #eddbc8;
 
   /* Text */
   --color-text-primary: #203148;
@@ -31,7 +28,9 @@
 
   /* UI Elements */
   --color-border-light: #d1d5db;
-  --color-error: #ef4444;
+  --color-error: #d4635f;
+  --color-success: #4a9b6d;
+  --color-warning: #c49a3c;
   --color-label: #6b7280;
 
   /* Aliases */
@@ -45,6 +44,19 @@
   --font-body: "Manrope", sans-serif;
   --font-mono: "Source Code Pro", monospace;
   --font-logo: "Poppins", sans-serif;
+  --font-emphasis: "Playfair", "Playfair Display", Georgia, serif;
+
+  /* ===== FONT SIZES ===== */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+  --text-5xl: 3.75rem;
+  --text-6xl: 4.5rem;
 
   /* ===== SPACING ===== */
   --spacing-xs: 0.25rem;
@@ -54,6 +66,8 @@
   --spacing-xl: 2rem;
   --spacing-2xl: 3rem;
   --spacing-3xl: 4rem;
+  --spacing-4xl: 6rem;
+  --spacing-5xl: 8rem;
 
   /* ===== BORDERS ===== */
   --border-radius-sm: 0.25rem;   /* 4px - tags, buttons, inputs */
@@ -61,6 +75,11 @@
   --border-radius-lg: 0.75rem;   /* 12px - cards */
   --border-radius-xl: 1rem;      /* 16px - large cards, modals */
   --border-radius-full: 9999px;  /* circles only - avatars, close buttons */
+
+  /* ===== SHADOWS ===== */
+  --shadow-soft: 0 2px 8px rgba(32, 49, 72, 0.06);
+  --shadow-medium: 0 4px 16px rgba(32, 49, 72, 0.08);
+  --shadow-accent: 0 4px 20px rgba(37, 132, 250, 0.12);
 
   /* ===== TRANSITIONS ===== */
   --transition-fast: 0.15s ease;

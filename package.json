@@ -5,6 +5,7 @@
   "files": [
     "tokens.css",
     "components.css",
+    "index.html",
     "DESIGN_SYSTEM.md"
   ]
 }

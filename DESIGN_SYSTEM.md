@@ -2,22 +2,25 @@
 
 ## Philosophy
 
-**Zen, minimal, inviting.** Every screen should feel like a calm, blank page that invites interaction. Avoid clutter, heavy borders, and complex layouts. When in doubt, remove elements rather than add them.
+**Satori** (悟り) — the Japanese Zen concept of sudden clarity, seeing things as they truly are.
 
-**Progressive disclosure.** Show only what's needed. Empty states should feel welcoming, not broken. Hide sections until they have content.
+Our design follows the same principle: strip away everything that doesn't serve understanding. What remains should feel inevitable.
 
-**Typography-first.** Let beautiful type do the heavy lifting. Avoid boxing everything up. Use whitespace generously.
+**Ma (間) — emptiness defines meaning.** Generous whitespace isn't empty, it's active. Every screen should feel like a calm, blank page that invites interaction. When in doubt, remove elements rather than add them.
+
+**Progressive disclosure.** Show only what's needed. Empty states should feel welcoming, not broken. Hide sections until they have content. Reveal complexity gradually, not all at once.
+
+**Typography-first.** Let beautiful type do the heavy lifting. Avoid boxing everything up. Use whitespace generously. The right typeface at the right weight communicates more than any icon or illustration.
 
 ---
 
 ## Colors
 
 ```css
-/* Primary palette */
---color-background-primary: white;
+/* Backgrounds */
+--color-background-primary: #FAFAF8;     /* Warm off-white */
 --color-background-secondary: #dae5f3;     /* Light blue */
 --color-background-dark: #203148;          /* Navy */
---color-background-beige: #eddbc8;
 
 /* Text */
 --color-text-primary: #203148;             /* Navy - main text */
@@ -26,15 +29,18 @@
 /* Accent */
 --color-accent: #2584fa;                   /* Electric blue - single accent throughout */
 
-/* UI */
+/* UI / State */
 --color-border-light: #d1d5db;
---color-error: #ef4444;
+--color-error: #d4635f;
+--color-success: #4a9b6d;
+--color-warning: #c49a3c;
 ```
 
 **Usage:**
-- One accent color only (`#2584fa`) - for links, active states, hover effects
+- One accent color only (`#2584fa`) — for links, active states, hover effects
 - Text is navy (`#203148`) or gray (`#515151`), never pure black
 - Backgrounds are white or the subtle `hero-gradient`
+- State colors (error/success/warning) only for status indicators and validation — never decorative
 
 ---
 

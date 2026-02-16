@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Satori Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=Source+Code+Pro:wght@300;400;500;600&family=Playfair:ital,wght@1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="components.css">
+  <style>
+    /* ===== RESET ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text-primary);
+      -webkit-font-smoothing: antialiased;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(157, 197, 250, 0.15), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 25%, rgba(245, 223, 191, 0.12), transparent),
+        radial-gradient(ellipse 70% 30% at 50% 85%, rgba(157, 197, 250, 0.08), transparent),
+        linear-gradient(180deg, #fafcff 0%, white 30%, #fafafa 100%);
+      min-height: 100vh;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes drift {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(30px, -20px, 0) scale(1.04); }
+      100% { transform: translate3d(0, 0, 0) scale(1); }
+    }
+    @keyframes driftReverse {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(-20px, 16px, 0) scale(1.03); }
+      100% { transform: translate3d(0, 0, 0) scale(1); }
+    }
+    .reveal {
+      opacity: 0;
+      animation: fadeUp 0.8s cubic-bezier(0.17, 0.76, 0.28, 1) forwards;
+      animation-delay: var(--delay, 0s);
+    }
+
+    /* ===== FLOATING ORBS ===== */
+    .orbs { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(50px);
+    }
+    .orb-1 { top: 5%; left: 12%; width: 280px; height: 280px; background: radial-gradient(circle, rgba(37, 132, 250, 0.08), transparent 70%); animation: drift 18s ease-in-out infinite; }
+    .orb-2 { top: 20%; right: 10%; width: 220px; height: 220px; background: radial-gradient(circle, rgba(245, 223, 191, 0.12), transparent 70%); animation: driftReverse 22s ease-in-out infinite; }
+    .orb-3 { top: 55%; left: 50%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(157, 197, 250, 0.07), transparent 70%); animation: drift 20s ease-in-out infinite; }
+    .orb-4 { top: 75%; left: 15%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(237, 219, 200, 0.1), transparent 70%); animation: driftReverse 16s ease-in-out infinite; }
+
+    /* ===== LAYOUT ===== */
+    .page { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 4rem 1.5rem 3rem; }
+    @media (min-width: 768px) { .page { padding: 5rem 2rem 4rem; } }
+    .sections { display: flex; flex-direction: column; gap: 2rem; }
+
+    /* ===== SECTION CARDS ===== */
+    .section-card {
+      background: white;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 0 16px 40px rgba(32, 49, 72, 0.06);
+      padding: clamp(2rem, 5vw, 3.5rem);
+    }
+
+    /* ===== EYEBROW ===== */
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-weight: 600;
+      color: var(--color-accent);
+      margin-bottom: 0.75rem;
+    }
+
+    /* ===== SECTION HEADING ===== */
+    .section-head { margin-bottom: 2.5rem; }
+    .section-head h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+      font-weight: 600;
+      line-height: 1.15;
+      color: var(--color-text-primary);
+      margin-bottom: 0.75rem;
+    }
+    .section-head p {
+      font-family: var(--font-body);
+      color: var(--color-text-secondary);
+      font-weight: 300;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      max-width: 40rem;
+    }
+
+    /* ===== HERO ===== */
+    .hero { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: start; }
+    @media (min-width: 768px) { .hero { grid-template-columns: 1.3fr 1fr; gap: 3rem; } }
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.75rem, 6vw, 4.5rem);
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--color-text-primary);
+    }
+    .hero-lead {
+      font-family: var(--font-body);
+      color: var(--color-text-secondary);
+      font-size: 1rem;
+      line-height: 1.7;
+      font-weight: 300;
+      margin-top: 1.5rem;
+      max-width: 28rem;
+    }
+    .hero-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    .hero-pill {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.75rem;
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--border-radius-sm);
+      color: var(--color-text-secondary);
+    }
+    .hero-panel {
+      background: rgba(218, 229, 243, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 1.25rem;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 2rem;
+    }
+    .hero-token-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1rem; }
+    .hero-token-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .hero-token-value {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--color-text-primary);
+    }
+
+    /* ===== PRINCIPLES ===== */
+    .principles-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    @media (min-width: 768px) { .principles-grid { grid-template-columns: 1fr; } }
+    .principle-card {
+      border-radius: 1rem;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      background: #fafcff;
+      padding: 1.75rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .principle-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(32, 49, 72, 0.08); }
+    .principle-icon {
+      width: 44px; height: 44px;
+      border-radius: 0.75rem;
+      background: rgba(37, 132, 250, 0.08);
+      color: var(--color-accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .principle-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .principle-card p {
+      font-family: var(--font-body);
+      color: var(--color-text-secondary);
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.65;
+    }
+
+    /* ===== SWATCHES ===== */
+    .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.75rem; }
+    .swatch {
+      border: none; background: none; cursor: pointer; text-align: left; padding: 0;
+      transition: transform 0.2s ease;
+    }
+    .swatch:hover { transform: scale(1.04); }
+    .swatch-color {
+      width: 100%;
+      height: 5.5rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: flex-end;
+      padding: 0.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .swatch-copied {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0;
+      transition: opacity 0.2s;
+      border-radius: 1rem;
+    }
+    .swatch-copied.show { opacity: 1; }
+    .swatch-hex {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .swatch:hover .swatch-hex { opacity: 0.8; }
+    .swatch-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-primary);
+      margin-top: 0.5rem;
+      display: block;
+    }
+    .swatch-sub {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      color: var(--color-text-secondary);
+      display: block;
+    }
+
+    /* ===== TYPE SAMPLES ===== */
+    .type-family-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 2.5rem; }
+    @media (min-width: 768px) { .type-family-grid { grid-template-columns: repeat(3, 1fr); } }
+    .type-specimen {
+      font-size: 3.5rem;
+      line-height: 1;
+      color: var(--color-text-primary);
+      margin-bottom: 1rem;
+      opacity: 0.15;
+    }
+    .type-family {
+      border-radius: 1rem;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      background: #fafcff;
+      padding: 1.75rem;
+    }
+    .type-family .label-text {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+      color: var(--color-accent);
+      margin-bottom: 0.75rem;
+    }
+    .type-family h4 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .type-family p {
+      font-family: var(--font-body);
+      color: var(--color-text-secondary);
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+    .type-scale-row {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .type-scale-row:last-child { border-bottom: none; }
+    .type-meta {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--color-text-secondary);
+      min-width: 170px;
+      flex-shrink: 0;
+    }
+    .type-meta span { display: block; font-size: 0.55rem; color: var(--color-accent); margin-top: 2px; }
+
+    /* ===== SPACING ===== */
+    .space-row { display: flex; align-items: center; gap: 1rem; padding: 0.5rem 0; }
+    .space-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--color-text-secondary);
+      min-width: 150px;
+    }
+    .space-bar {
+      height: 10px;
+      background: linear-gradient(90deg, var(--color-accent), rgba(37, 132, 250, 0.4));
+      border-radius: var(--border-radius-sm);
+      transition: width 0.4s ease;
+    }
+
+    /* ===== COMPONENT GRID ===== */
+    .comp-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+    @media (min-width: 768px) { .comp-grid { grid-template-columns: repeat(2, 1fr); } }
+    .comp-stack { display: flex; flex-direction: column; gap: 0.75rem; }
+    .comp-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+    }
+
+    /* ===== PHILOSOPHY BOX ===== */
+    .philosophy-box {
+      border-radius: 1rem;
+      border: 1px dashed rgba(0, 0, 0, 0.1);
+      background: #fafcff;
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+    }
+    .philosophy-box p {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+      font-weight: 300;
+      line-height: 1.7;
+    }
+    .philosophy-box code {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-accent);
+    }
+    .philosophy-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .philosophy-pill {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.65rem;
+      border-radius: var(--border-radius-sm);
+      background: rgba(37, 132, 250, 0.06);
+      color: var(--color-accent);
+      border: 1px solid rgba(37, 132, 250, 0.15);
+    }
+
+    /* ===== BORDER SHOWCASE ===== */
+    .border-row { display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-end; }
+    .border-item { text-align: center; }
+    .border-box {
+      width: 56px; height: 56px;
+      border: 1px solid var(--color-accent);
+      margin-bottom: 0.5rem;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .border-item:hover .border-box { background: rgba(37, 132, 250, 0.04); }
+    .border-name {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      color: var(--color-text-secondary);
+      display: block;
+    }
+
+    /* ===== BACKGROUNDS ===== */
+    .bg-demo {
+      height: 110px;
+      border-radius: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    /* ===== THEME CARDS ===== */
+    .theme-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    @media (min-width: 768px) { .theme-grid { grid-template-columns: repeat(3, 1fr); } }
+    .theme-card {
+      padding: 2rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease;
+    }
+    .theme-card:hover { transform: translateY(-2px); }
+    .theme-card h4 { font-family: var(--font-heading); font-weight: 600; margin-bottom: 0.25rem; }
+    .theme-card p { font-size: 0.85rem; font-weight: 300; }
+
+    /* ===== LAYOUT BARS ===== */
+    .layout-bar {
+      height: 8px;
+      background: linear-gradient(90deg, var(--color-accent), rgba(37, 132, 250, 0.2));
+      border-radius: var(--border-radius-sm);
+    }
+
+    /* ===== QUICK REF ===== */
+    .code-block {
+      background: var(--color-background-dark);
+      color: rgba(255, 255, 255, 0.85);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      line-height: 1.9;
+      padding: 2rem;
+      border-radius: 1rem;
+      overflow-x: auto;
+    }
+    .code-block .comment { color: rgba(37, 132, 250, 0.7); }
+
+    /* ===== ACCENT STRIPE ===== */
+    .accent-stripe {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-accent), rgba(37, 132, 250, 0.3));
+      z-index: 100;
+    }
+
+    /* ===== FOOTER ===== */
+    .sr-footer {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Accent stripe -->
+  <div class="accent-stripe"></div>
+
+  <!-- Floating orbs -->
+  <div class="orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+  </div>
+
+  <div class="page">
+    <div class="sections">
+
+      <!-- ═══════════════════════════════════════
+           1. HERO
+      ═══════════════════════════════════════ -->
+      <section class="hero reveal" style="--delay: 0.05s;">
+        <div>
+          <div class="eyebrow">Satori Design System</div>
+          <h1>Zen, minimal, inviting.</h1>
+          <p class="hero-lead">
+            A calm, typography-first design language. Generous whitespace,
+            a single blue accent, and progressive disclosure. Every screen
+            should feel like a blank page that invites interaction.
+          </p>
+          <div class="hero-pills">
+            <span class="hero-pill">Minimal</span>
+            <span class="hero-pill">Typography-first</span>
+            <span class="hero-pill">Single accent</span>
+            <span class="hero-pill">Progressive disclosure</span>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <div class="eyebrow">At a glance</div>
+          <div class="hero-token-grid">
+            <div>
+              <span class="hero-token-label">Headings</span>
+              <span class="hero-token-value" style="font-family: var(--font-heading);">Poppins</span>
+            </div>
+            <div>
+              <span class="hero-token-label">Body</span>
+              <span class="hero-token-value" style="font-family: var(--font-body); font-weight: 400;">Manrope</span>
+            </div>
+            <div>
+              <span class="hero-token-label">Mono / Labels</span>
+              <span class="hero-token-value" style="font-family: var(--font-mono); font-size: 0.85rem;">Source Code Pro</span>
+            </div>
+            <div>
+              <span class="hero-token-label">Accent</span>
+              <span class="hero-token-value" style="color: var(--color-accent);">#2584fa</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           2. DESIGN PRINCIPLES
+      ═══════════════════════════════════════ -->
+      <div class="section-card reveal" style="--delay: 0.1s;">
+        <div class="section-head">
+          <div class="eyebrow">Principles</div>
+          <h2>Design Foundations</h2>
+          <p>Four ideas shape how Satori looks and feels, from the marketing website to the analytics platform.</p>
+        </div>
+        <div class="principles-grid" style="grid-template-columns: 1fr;">
+          <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+            <div class="principle-card">
+              <div class="principle-icon">&#9675;</div>
+              <h3>Breathing Space</h3>
+              <p>When something feels cramped, add more space. Generous whitespace lets the content speak. Hide sections until they have content.</p>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="principle-card">
+              <div class="principle-icon">&#9681;</div>
+              <h3>Typography Does the Work</h3>
+              <p>Three fonts, three roles. Poppins for gravitas, Manrope for readability, Source Code Pro for data. No decorative fonts, no trend-chasing.</p>
+            </div>
+            <div class="principle-card">
+              <div class="principle-icon">&#9673;</div>
+              <h3>Single Accent</h3>
+              <p>One blue for links, active states, and hover effects. No competing colors. Navy for text, never pure black. Calm and focused.</p>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+            <div class="principle-card">
+              <div class="principle-icon">&#10005;</div>
+              <h3>When in Doubt, Remove</h3>
+              <p>Every element must earn its place. If something feels decorative, delete it. If a trend doesn't serve understanding, skip it. Restraint is the feature.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           3. COLOR PALETTE
+      ═══════════════════════════════════════ -->
+      <div class="section-card reveal" style="--delay: 0.12s;">
+        <div class="section-head">
+          <div class="eyebrow">Palette</div>
+          <h2>Color System</h2>
+          <p>Navy text on white. One electric blue accent. Click any swatch to copy its hex value.</p>
+        </div>
+
+        <div class="comp-label" style="margin-bottom: 0.75rem;">Backgrounds</div>
+        <div class="swatch-grid" style="margin-bottom: 2rem;">
+          <button class="swatch" onclick="copySwatch(this, '#FAFAF8')">
+            <div class="swatch-color" style="background: #FAFAF8; border: 1px solid var(--color-border-light);">
+              <span class="swatch-hex" style="color: var(--color-text-primary);">#FAFAF8</span>
+              <div class="swatch-copied" style="background: rgba(250,250,248,0.9); color: var(--color-text-primary);">copied</div>
+            </div>
+            <span class="swatch-label">Primary</span>
+            <span class="swatch-sub">Warm off-white</span>
+          </button>
+          <button class="swatch" onclick="copySwatch(this, '#dae5f3')">
+            <div class="swatch-color" style="background: #dae5f3;">
+              <span class="swatch-hex" style="color: var(--color-text-primary);">#dae5f3</span>
+              <div class="swatch-copied" style="background: rgba(218,229,243,0.9); color: var(--color-text-primary);">copied</div>
+            </div>
+            <span class="swatch-label">Secondary</span>
+            <span class="swatch-sub">Light blue</span>
+          </button>
+          <button class="swatch" onclick="copySwatch(this, '#203148')">
+            <div class="swatch-color" style="background: #203148;">
+              <span class="swatch-hex" style="color: white;">#203148</span>
+              <div class="swatch-copied" style="background: rgba(32,49,72,0.9); color: white;">copied</div>
+            </div>
+            <span class="swatch-label">Dark</span>
+            <span class="swatch-sub">Navy</span>
+          </button>
+        </div>
+
+        <div class="comp-label" style="margin-bottom: 0.75rem;">Core</div>
+        <div class="swatch-grid" style="margin-bottom: 2rem;">
+          <button class="swatch" onclick="copySwatch(this, '#203148')">
+            <div class="swatch-color" style="background: #203148;">
+              <span class="swatch-hex" style="color: white;">#203148</span>
+              <div class="swatch-copied" style="background: rgba(32,49,72,0.9); color: white;">copied</div>
+            </div>
+            <span class="swatch-label">Text Primary</span>
+            <span class="swatch-sub">Navy &mdash; main text</span>
+          </button>
+          <button class="swatch" onclick="copySwatch(this, '#515151')">
+            <div class="swatch-color" style="background: #515151;">
+              <span class="swatch-hex" style="color: white;">#515151</span>
+              <div class="swatch-copied" style="background: rgba(81,81,81,0.9); color: white;">copied</div>
+            </div>
+            <span class="swatch-label">Text Secondary</span>
+            <span class="swatch-sub">Grey &mdash; descriptions</span>
+          </button>
+          <button class="swatch" onclick="copySwatch(this, '#2584fa')">
+            <div class="swatch-color" style="background: #2584fa;">
+              <span class="swatch-hex" style="color: white;">#2584fa</span>
+              <div class="swatch-copied" style="background: rgba(37,132,250,0.9); color: white;">copied</div>
+            </div>
+            <span class="swatch-label">Accent</span>
+            <span class="swatch-sub">Electric blue</span>
+          </button>
+          <button class="swatch" onclick="copySwatch(this, '#d1d5db')">
+            <div class="swatch-color" style="background: #d1d5db;">
+              <span class="swatch-hex" style="color: var(--color-text-primary);">#d1d5db</span>
+              <div class="swatch-copied" style="background: rgba(209,213,219,0.9); color: var(--color-text-primary);">copied</div>
+            </div>
+            <span class="swatch-label">Border</span>
+            <span class="swatch-sub">Dividers, outlines</span>
+          </button>
+        </div>
+
+        <div class="comp-label" style="margin-bottom: 0.75rem;">Status</div>
+        <div class="swatch-grid">
+          <button class="swatch" onclick="copySwatch(this, '#d4635f')">
+            <div class="swatch-color" style="background: #d4635f;">
+              <span class="swatch-hex" style="color: white;">#d4635f</span>
+              <div class="swatch-copied" style="background: rgba(212,99,95,0.9); color: white;">copied</div>
+            </div>
+            <span class="swatch-label">Error</span>
+            <span class="swatch-sub">Failed, danger</span>
+          </button>
+          <button class="swatch" onclick="copySwatch(this, '#4a9b6d')">
+            <div class="swatch-color" style="background: #4a9b6d;">
+              <span class="swatch-hex" style="color: white;">#4a9b6d</span>
+              <div class="swatch-copied" style="background: rgba(74,155,109,0.9); color: white;">copied</div>
+            </div>
+            <span class="swatch-label">Success</span>
+            <span class="swatch-sub">Complete, valid</span>
+          </button>
+          <button class="swatch" onclick="copySwatch(this, '#c49a3c')">
+            <div class="swatch-color" style="background: #c49a3c;">
+              <span class="swatch-hex" style="color: white;">#c49a3c</span>
+              <div class="swatch-copied" style="background: rgba(196,154,60,0.9); color: white;">copied</div>
+            </div>
+            <span class="swatch-label">Warning</span>
+            <span class="swatch-sub">Queued, caution</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           4. TYPOGRAPHY
+      ═══════════════════════════════════════ -->
+      <div class="section-card reveal" style="--delay: 0.14s;">
+        <div class="section-head">
+          <div class="eyebrow">Typography</div>
+          <h2>Type System</h2>
+          <p>Three fonts, three clear roles. No decorative typefaces. Each one earns its place.</p>
+        </div>
+
+        <div class="type-family-grid">
+          <div class="type-family">
+            <div class="type-specimen" style="font-family: var(--font-heading); font-weight: 600;">Aa</div>
+            <div class="label-text">Headings / Poppins</div>
+            <p>Semibold (600), tracking-wide. Page titles, section headers, card titles.</p>
+          </div>
+          <div class="type-family">
+            <div class="type-specimen" style="font-family: var(--font-body); font-weight: 300;">Aa</div>
+            <div class="label-text">Body / Manrope</div>
+            <p>Light weight (300), relaxed leading. Paragraphs, descriptions, long-form text.</p>
+          </div>
+          <div class="type-family">
+            <div class="type-specimen" style="font-family: var(--font-mono);">Aa</div>
+            <div class="label-text">Mono / Source Code Pro</div>
+            <p>Uppercase, tracking-wider. Tags, buttons, dates, technical info.</p>
+            <p style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-accent); margin-top: 0.75rem;">FEB 14 &middot; DRAFT &middot; #2584FA</p>
+          </div>
+        </div>
+
+        <div class="comp-label" style="margin-bottom: 1rem;">Type Scale</div>
+        <div>
+          <div class="type-scale-row">
+            <div class="type-meta">.heading-1 <span>clamp(3rem, 6vw, 4.5rem) &middot; 0.05em</span></div>
+            <span class="heading-1" style="font-size: 2.25rem;">Hero titles</span>
+          </div>
+          <div class="type-scale-row">
+            <div class="type-meta">.heading-2 <span>clamp(2.25rem, 5vw, 3.75rem) &middot; 0.05em</span></div>
+            <span class="heading-2" style="font-size: 1.75rem;">Page titles</span>
+          </div>
+          <div class="type-scale-row">
+            <div class="type-meta">.heading-3 <span>clamp(1.25rem, 2.5vw, 1.5rem)</span></div>
+            <span class="heading-3">Section titles</span>
+          </div>
+          <div class="type-scale-row">
+            <div class="type-meta">.heading-4 <span>clamp(1.125rem, 2vw, 1.25rem)</span></div>
+            <span class="heading-4">Card titles</span>
+          </div>
+          <div class="type-scale-row">
+            <div class="type-meta">.body-text <span>clamp(0.875rem, 1.5vw, 1rem)</span></div>
+            <span class="body-text">Default body text with light weight and relaxed leading.</span>
+          </div>
+          <div class="type-scale-row">
+            <div class="type-meta">.body-text-lg <span>clamp(1rem, 1.8vw, 1.125rem)</span></div>
+            <span class="body-text-lg">Emphasized body for introductions.</span>
+          </div>
+          <div class="type-scale-row">
+            <div class="type-meta">.body-text-sm <span>0.875rem</span></div>
+            <span class="body-text-sm">Secondary text and captions.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           5. SPACING
+      ═══════════════════════════════════════ -->
+      <div class="section-card reveal" style="--delay: 0.16s;">
+        <div class="section-head">
+          <div class="eyebrow">Spacing</div>
+          <h2>Space Scale</h2>
+          <p>Generous. When something feels cramped, add more space.</p>
+        </div>
+        <div>
+          <div class="space-row"><span class="space-label">--spacing-xs (4px)</span><div class="space-bar" style="width: 4px;"></div></div>
+          <div class="space-row"><span class="space-label">--spacing-sm (8px)</span><div class="space-bar" style="width: 8px;"></div></div>
+          <div class="space-row"><span class="space-label">--spacing-md (16px)</span><div class="space-bar" style="width: 16px;"></div></div>
+          <div class="space-row"><span class="space-label">--spacing-lg (24px)</span><div class="space-bar" style="width: 24px;"></div></div>
+          <div class="space-row"><span class="space-label">--spacing-xl (32px)</span><div class="space-bar" style="width: 32px;"></div></div>
+          <div class="space-row"><span class="space-label">--spacing-2xl (48px)</span><div class="space-bar" style="width: 48px;"></div></div>
+          <div class="space-row"><span class="space-label">--spacing-3xl (64px)</span><div class="space-bar" style="width: 64px;"></div></div>
+          <div class="space-row"><span class="space-label">--spacing-4xl (96px)</span><div class="space-bar" style="width: 96px;"></div></div>
+          <div class="space-row"><span class="space-label">--spacing-5xl (128px)</span><div class="space-bar" style="width: 128px;"></div></div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           6. COMPONENTS
+      ═══════════════════════════════════════ -->
+      <div class="section-card reveal" style="--delay: 0.18s;">
+        <div class="section-head">
+          <div class="eyebrow">Components</div>
+          <h2>UI Elements</h2>
+          <p>Links preferred over buttons. Outline style, not elevation. Subtle hover states.</p>
+        </div>
+
+        <div class="philosophy-box">
+          <div class="eyebrow" style="color: var(--color-accent);">Component Philosophy</div>
+          <p>
+            Prefer <strong>link arrows</strong> over buttons for most CTAs. Reserve buttons for form submissions
+            or destructive actions. Cards use <code>border</code> not <code>box-shadow</code> &mdash; on hover,
+            the border turns accent blue. Inputs are minimal: bottom-border only, no box.
+          </p>
+          <div class="philosophy-pills">
+            <span class="philosophy-pill">Links over buttons</span>
+            <span class="philosophy-pill">Outline, not shadow</span>
+            <span class="philosophy-pill">Border hover = accent</span>
+            <span class="philosophy-pill">Underline inputs</span>
+          </div>
+        </div>
+
+        <!-- Stat Row -->
+        <div style="margin-bottom: 2.5rem;">
+          <div class="comp-label" style="margin-bottom: 0.75rem;">Stat Row</div>
+          <p style="font-family: var(--font-body); color: var(--color-text-secondary); font-size: 0.85rem; font-weight: 300; margin-bottom: 1.25rem;">
+            Horizontal key metrics with thin dividers. Use <code style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent);">.stat-row</code> &gt; <code style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent);">.stat-row-item</code>.
+          </p>
+          <div class="stat-row">
+            <div class="stat-row-item">
+              <div class="stat-row-value">24</div>
+              <div class="stat-row-label">Data Sources</div>
+            </div>
+            <div class="stat-row-item">
+              <div class="stat-row-value">1.2k</div>
+              <div class="stat-row-label">Insights Generated</div>
+            </div>
+            <div class="stat-row-item">
+              <div class="stat-row-value">0.3s</div>
+              <div class="stat-row-label">Avg Response</div>
+            </div>
+            <div class="stat-row-item">
+              <div class="stat-row-value">99.9%</div>
+              <div class="stat-row-label">Uptime</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="comp-grid">
+          <div class="comp-stack">
+            <div class="comp-label">Tags / Labels</div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="tag">Draft</span>
+              <span class="tag">Research</span>
+              <span class="tag">AI</span>
+              <span class="tag">Insights</span>
+            </div>
+          </div>
+
+          <div class="comp-stack">
+            <div class="comp-label">Link Arrow (preferred CTA)</div>
+            <span class="link-arrow" style="gap: 0.5rem;">
+              Get Started <span>&rarr;</span>
+            </span>
+            <span class="link-arrow" style="gap: 0.5rem;">
+              View Case Study <span>&rarr;</span>
+            </span>
+          </div>
+
+          <div class="comp-stack">
+            <div class="comp-label">Buttons</div>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+              <button class="btn-primary">Primary</button>
+              <button class="btn-secondary">Secondary</button>
+            </div>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-top: 0.25rem;">
+              <button class="btn-primary" style="font-size: 0.75rem; padding: 0.5rem 1rem;">Small Primary</button>
+              <button class="btn-secondary" style="font-size: 0.75rem; padding: 0.5rem 1rem;">Small Secondary</button>
+            </div>
+          </div>
+
+          <div class="comp-stack">
+            <div class="comp-label">Input Field</div>
+            <input class="input-field" placeholder="Enter your email..." style="max-width: 320px;">
+            <input class="input-field" placeholder="Focused state (click me)" style="max-width: 320px;">
+          </div>
+
+          <div class="comp-stack">
+            <div class="comp-label">Card</div>
+            <div class="card card-hover" style="max-width: 340px;">
+              <span class="heading-4">Card Title</span>
+              <p class="body-text" style="margin-top: 0.5rem;">Subtle border, rounded corners. Border turns accent blue on hover. No heavy shadows.</p>
+              <span class="link-arrow" style="gap: 0.5rem; margin-top: 1rem; font-size: 0.75rem;">
+                Learn More <span>&rarr;</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="comp-stack">
+            <div class="comp-label">Card Grid</div>
+            <div class="grid-cards" style="max-width: 500px;">
+              <div class="card card-hover">
+                <span class="tag" style="margin-bottom: 0.75rem;">Research</span>
+                <span class="heading-4" style="display: block;">Project One</span>
+                <p class="body-text-sm" style="margin-top: 0.25rem;">Responsive: 1 &rarr; 2 &rarr; 3 cols</p>
+              </div>
+              <div class="card card-hover">
+                <span class="tag" style="margin-bottom: 0.75rem;">AI</span>
+                <span class="heading-4" style="display: block;">Project Two</span>
+                <p class="body-text-sm" style="margin-top: 0.25rem;">Cards compose with tags and links</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           7. BORDERS & RADIUS
+      ═══════════════════════════════════════ -->
+      <div class="section-card reveal" style="--delay: 0.2s;">
+        <div class="section-head">
+          <div class="eyebrow">Borders</div>
+          <h2>Borders and Radius</h2>
+          <p>Clean, rounded edges. No heavy shadows &mdash; outline style throughout.</p>
+        </div>
+        <div class="border-row">
+          <div class="border-item">
+            <div class="border-box" style="border-radius: var(--border-radius-sm);"></div>
+            <span class="border-name">sm</span>
+            <span class="border-name">0.25rem</span>
+          </div>
+          <div class="border-item">
+            <div class="border-box" style="border-radius: var(--border-radius-md);"></div>
+            <span class="border-name">md</span>
+            <span class="border-name">0.5rem</span>
+          </div>
+          <div class="border-item">
+            <div class="border-box" style="border-radius: var(--border-radius-lg);"></div>
+            <span class="border-name">lg</span>
+            <span class="border-name">0.75rem</span>
+          </div>
+          <div class="border-item">
+            <div class="border-box" style="border-radius: var(--border-radius-xl);"></div>
+            <span class="border-name">xl</span>
+            <span class="border-name">1rem</span>
+          </div>
+          <div class="border-item">
+            <div class="border-box" style="border-radius: var(--border-radius-full); width: 56px; height: 56px;"></div>
+            <span class="border-name">full</span>
+            <span class="border-name">9999px</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           8. BACKGROUNDS
+      ═══════════════════════════════════════ -->
+      <div class="section-card reveal" style="--delay: 0.22s;">
+        <div class="section-head">
+          <div class="eyebrow">Backgrounds</div>
+          <h2>Gradients &amp; Surfaces</h2>
+          <p>Subtle gradients for hero and key pages. White or near-white for everything else.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+          <div class="bg-demo hero-gradient">
+            <span class="comp-label">.hero-gradient</span>
+          </div>
+          <div class="bg-demo section-gradient">
+            <span class="comp-label">.section-gradient</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           9. SECTION THEMES
+      ═══════════════════════════════════════ -->
+      <div class="section-card reveal" style="--delay: 0.24s;">
+        <div class="section-head">
+          <div class="eyebrow">Themes</div>
+          <h2>Section Themes</h2>
+          <p>Three themes for page sections. Tight palette &mdash; no grey, no beige. Apply the theme class + .bg-section, then use .text-section-primary / secondary.</p>
+        </div>
+        <div class="theme-grid">
+          <div class="theme-card section-light bg-section">
+            <h4 class="text-section-primary">Light</h4>
+            <p class="text-section-secondary">.section-light &mdash; white background, navy text.</p>
+          </div>
+          <div class="theme-card section-dark bg-section" style="border-color: transparent;">
+            <h4 class="text-section-primary">Dark</h4>
+            <p class="text-section-secondary">.section-dark &mdash; navy background, white text.</p>
+          </div>
+          <div class="theme-card section-blue bg-section">
+            <h4 class="text-section-primary">Blue</h4>
+            <p class="text-section-secondary">.section-blue &mdash; light blue background.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           10. LAYOUT
+      ═══════════════════════════════════════ -->
+      <div class="section-card reveal" style="--delay: 0.26s;">
+        <div class="section-head">
+          <div class="eyebrow">Layout</div>
+          <h2>Containers</h2>
+          <p>Three widths for different content types. All centered with auto margins.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div>
+            <div class="comp-label" style="margin-bottom: 0.5rem;">.content-narrow (max: 42rem)</div>
+            <div class="layout-bar" style="max-width: 42rem;"></div>
+          </div>
+          <div>
+            <div class="comp-label" style="margin-bottom: 0.5rem;">.content-default (max: 56rem)</div>
+            <div class="layout-bar" style="max-width: 56rem; opacity: 0.7;"></div>
+          </div>
+          <div>
+            <div class="comp-label" style="margin-bottom: 0.5rem;">.content-wide (max: 80rem)</div>
+            <div class="layout-bar" style="max-width: 80rem; opacity: 0.45;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           11. QUICK REFERENCE
+      ═══════════════════════════════════════ -->
+      <div class="section-card reveal" style="--delay: 0.28s;">
+        <div class="section-head">
+          <div class="eyebrow">Reference</div>
+          <h2>Quick Reference</h2>
+          <p>All CSS custom properties from tokens.css in one block.</p>
+        </div>
+        <pre class="code-block"><span class="comment">/* COLORS */</span>
+--color-background-primary:    #FAFAF8              <span class="comment">Warm off-white</span>
+--color-background-secondary:  #dae5f3     <span class="comment">Light blue</span>
+--color-background-dark:       #203148     <span class="comment">Navy</span>
+--color-text-primary:          #203148     <span class="comment">Navy &mdash; main text</span>
+--color-text-secondary:        #515151     <span class="comment">Grey &mdash; secondary</span>
+--color-accent:                #2584fa     <span class="comment">Electric blue</span>
+--color-border-light:          #d1d5db     <span class="comment">Borders</span>
+--color-error:                 #d4635f     <span class="comment">Errors</span>
+--color-success:               #4a9b6d     <span class="comment">Complete, valid</span>
+--color-warning:               #c49a3c     <span class="comment">Queued, caution</span>
+
+<span class="comment">/* FONTS */</span>
+--font-heading:   Poppins                  <span class="comment">Headings, titles</span>
+--font-body:      Manrope                  <span class="comment">Body text, descriptions</span>
+--font-mono:      Source Code Pro          <span class="comment">Labels, buttons, data</span>
+
+<span class="comment">/* FONT SIZES */</span>
+--text-xs:        0.75rem   (12px)
+--text-sm:        0.875rem  (14px)
+--text-base:      1rem      (16px)
+--text-lg:        1.125rem  (18px)
+--text-xl:        1.25rem   (20px)
+--text-2xl:       1.5rem    (24px)
+--text-3xl:       2.25rem   (36px)
+--text-4xl:       3rem      (48px)
+--text-5xl:       3.75rem   (60px)
+--text-6xl:       4.5rem    (72px)
+
+<span class="comment">/* SPACING */</span>
+--spacing-xs:     0.25rem   (4px)
+--spacing-sm:     0.5rem    (8px)
+--spacing-md:     1rem      (16px)
+--spacing-lg:     1.5rem    (24px)
+--spacing-xl:     2rem      (32px)
+--spacing-2xl:    3rem      (48px)
+--spacing-3xl:    4rem      (64px)
+--spacing-4xl:    6rem      (96px)
+--spacing-5xl:    8rem      (128px)
+
+<span class="comment">/* SHADOWS */</span>
+--shadow-soft:    0 2px 8px rgba(32,49,72,0.06)
+--shadow-medium:  0 4px 16px rgba(32,49,72,0.08)
+--shadow-accent:  0 4px 20px rgba(37,132,250,0.12)
+
+<span class="comment">/* BORDERS */</span>
+--border-radius-sm:   0.25rem              <span class="comment">Tags, buttons, inputs</span>
+--border-radius-md:   0.5rem               <span class="comment">Small cards</span>
+--border-radius-lg:   0.75rem              <span class="comment">Cards</span>
+--border-radius-xl:   1rem                 <span class="comment">Large cards, modals</span>
+--border-radius-full: 9999px               <span class="comment">Circles, avatars</span>
+
+<span class="comment">/* TRANSITIONS */</span>
+--transition-fast:    0.15s ease
+--transition-normal:  0.3s ease
+--transition-slow:    0.5s ease</pre>
+      </div>
+
+    </div>
+
+    <footer class="sr-footer">
+      Satori design system &mdash; zen, minimal, inviting.
+    </footer>
+  </div>
+
+  <script>
+    function copySwatch(btn, hex) {
+      navigator.clipboard.writeText(hex);
+      var el = btn.querySelector('.swatch-copied');
+      el.classList.add('show');
+      setTimeout(function() { el.classList.remove('show'); }, 1200);
+    }
+  </script>
+</body>
+</html>
