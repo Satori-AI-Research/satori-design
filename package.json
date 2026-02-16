@@ -1,0 +1,10 @@
+{
+  "name": "satori-design",
+  "version": "1.0.0",
+  "description": "Shared design tokens and component styles for Satori products",
+  "files": [
+    "tokens.css",
+    "components.css",
+    "DESIGN_SYSTEM.md"
+  ]
+}
