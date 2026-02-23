@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Satori — Style Mix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&family=Source+Code+Pro:wght@300;400;500;600&family=Playfair:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="components.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text-primary);
+      -webkit-font-smoothing: antialiased;
+      /* Original Satori gradient */
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(157, 197, 250, 0.15), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 25%, rgba(245, 223, 191, 0.12), transparent),
+        radial-gradient(ellipse 70% 30% at 50% 85%, rgba(157, 197, 250, 0.08), transparent),
+        linear-gradient(180deg, #fafcff 0%, white 30%, #fafafa 100%);
+      min-height: 100vh;
+    }
+
+    /* Subtle grid texture — fades out radially */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(37, 132, 250, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37, 132, 250, 0.018) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black, transparent);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black, transparent);
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    @media (min-width: 768px) { .page { padding: 0 2rem; } }
+
+    /* ===== ACCENT STRIPE ===== */
+    .accent-stripe {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-accent), rgba(37, 132, 250, 0.3));
+      z-index: 100;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: clamp(5rem, 12vw, 10rem) 0 clamp(3rem, 6vw, 5rem);
+      max-width: 680px;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--color-accent);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 2rem;
+      height: 2px;
+      background: var(--color-accent);
+      flex-shrink: 0;
+    }
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 7vw, 4.75rem);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.025em;
+      color: var(--color-text-primary);
+    }
+    .hero-lead {
+      color: var(--color-text-secondary);
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.75;
+      margin-top: 1.75rem;
+      max-width: 28rem;
+    }
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.75rem;
+    }
+    .hero-pill {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--border-radius-sm);
+      color: var(--color-text-secondary);
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .hero-pill:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+    .hero-btns {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 2.5rem;
+    }
+
+    /* ===== STAT ROW ===== */
+    .mix-stat-row {
+      display: flex;
+      border-top: 2px solid var(--color-text-primary);
+      margin-top: 3.5rem;
+    }
+    .mix-stat-item {
+      flex: 1;
+      padding: 1.5rem 1.5rem 1.5rem 0;
+      border-right: 1px solid var(--color-border-light);
+    }
+    .mix-stat-item:last-child { border-right: none; }
+    .mix-stat-value {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      letter-spacing: -0.02em;
+    }
+    .mix-stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-secondary);
+      margin-top: 0.25rem;
+    }
+    @media (max-width: 640px) {
+      .mix-stat-row { flex-direction: column; }
+      .mix-stat-item { border-right: none; border-bottom: 1px solid var(--color-border-light); padding: 1rem 0; }
+      .mix-stat-item:last-child { border-bottom: none; }
+    }
+
+    /* ===== SECTION DIVIDER ===== */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: clamp(2.5rem, 5vw, 4rem) 0;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--color-border-light);
+    }
+    .section-divider span {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--color-text-secondary);
+      white-space: nowrap;
+    }
+
+    /* ===== CARDS ===== */
+    .mix-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 768px) { .mix-card-grid { grid-template-columns: 1fr; } }
+
+    .mix-card {
+      background: white;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: var(--border-radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-soft);
+      transition: border-color var(--transition-normal), box-shadow var(--transition-normal), transform var(--transition-normal);
+      position: relative;
+    }
+    .mix-card:hover {
+      border-color: var(--color-accent);
+      box-shadow: var(--shadow-accent);
+      transform: translateY(-2px);
+    }
+    .mix-card-number {
+      font-family: var(--font-mono);
+      font-size: 3rem;
+      font-weight: 700;
+      color: rgba(37, 132, 250, 0.06);
+      position: absolute;
+      top: 1.25rem;
+      right: 1.5rem;
+      line-height: 1;
+    }
+
+    /* ===== PULL QUOTE ===== */
+    .pull-quote {
+      padding: clamp(2rem, 5vw, 3.5rem) 0;
+      text-align: center;
+    }
+    .pull-quote blockquote {
+      font-family: var(--font-emphasis);
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--color-text-primary);
+      line-height: 1.35;
+      max-width: 36rem;
+      margin: 0 auto;
+    }
+    .pull-quote cite {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-text-secondary);
+      font-style: normal;
+      display: block;
+      margin-top: 1.25rem;
+    }
+
+    /* ===== FEATURE EYEBROW (page-specific) ===== */
+    .mix-feature-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--color-accent);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .mix-feature-eyebrow::before {
+      content: '';
+      width: 1rem;
+      height: 2px;
+      background: var(--color-accent);
+    }
+
+    /* ===== DARK SECTION OVERRIDES ===== */
+    .dark-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--color-accent);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      position: relative;
+    }
+    .dark-eyebrow::before {
+      content: '';
+      width: 1.5rem;
+      height: 2px;
+      background: var(--color-accent);
+    }
+
+    /* ===== LOGO BAR ===== */
+    .logo-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(2rem, 5vw, 4rem);
+      padding: 2rem 0;
+      flex-wrap: wrap;
+    }
+    .logo-bar-item {
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      opacity: 0.15;
+      transition: opacity 0.3s;
+    }
+    .logo-bar-item:hover { opacity: 0.4; }
+
+    /* ===== FOOTER ===== */
+    .mix-footer {
+      border-top: 1px solid var(--color-border-light);
+      margin-top: 3rem;
+      padding: 3rem 0 2rem;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+    @media (max-width: 768px) { .mix-footer { grid-template-columns: 1fr 1fr; } }
+    .mix-footer-brand {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--color-text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .mix-footer-tagline {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+    .mix-footer-col-title {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-text-secondary);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .mix-footer-col a {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-weight: 400;
+      padding: 0.25rem 0;
+      transition: color 0.2s;
+    }
+    .mix-footer-col a:hover { color: var(--color-accent); }
+    .mix-footer-bottom {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--color-border-light);
+      padding-top: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="accent-stripe"></div>
+
+  <div class="page">
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+      <div class="hero-eyebrow">Satori AI</div>
+      <h1>Research with<br><em class="text-emphasis">clarity.</em></h1>
+      <p class="hero-lead body-text-lg" style="color: var(--color-text-secondary);">AI-powered qualitative analysis that transforms hours of interviews into structured, actionable insight.</p>
+      <div class="hero-pills">
+        <span class="hero-pill">Theme extraction</span>
+        <span class="hero-pill">Auto-synthesis</span>
+        <span class="hero-pill">Team collaboration</span>
+      </div>
+      <div class="hero-btns">
+        <button class="btn-primary">Get started &rarr;</button>
+        <button class="btn-secondary">Watch demo</button>
+      </div>
+    </section>
+
+    <!-- ===== STATS ===== -->
+    <div class="mix-stat-row">
+      <div class="mix-stat-item">
+        <div class="mix-stat-value">12k+</div>
+        <div class="mix-stat-label">Interviews analyzed</div>
+      </div>
+      <div class="mix-stat-item">
+        <div class="mix-stat-value">4.2x</div>
+        <div class="mix-stat-label">Faster than manual</div>
+      </div>
+      <div class="mix-stat-item">
+        <div class="mix-stat-value">98%</div>
+        <div class="mix-stat-label">Accuracy rate</div>
+      </div>
+      <div class="mix-stat-item">
+        <div class="mix-stat-value">0.3s</div>
+        <div class="mix-stat-label">Avg response</div>
+      </div>
+    </div>
+
+    <!-- ===== LOGO BAR ===== -->
+    <div class="section-divider"><span>Trusted by</span></div>
+    <div class="logo-bar">
+      <span class="logo-bar-item">Acme Corp</span>
+      <span class="logo-bar-item">Vercel</span>
+      <span class="logo-bar-item">Framer</span>
+      <span class="logo-bar-item">Asana</span>
+      <span class="logo-bar-item">Notion</span>
+      <span class="logo-bar-item">Linear</span>
+    </div>
+
+    <!-- ===== CARDS ===== -->
+    <div class="section-divider"><span>Platform</span></div>
+    <div class="mix-card-grid">
+      <div class="mix-card">
+        <span class="mix-card-number">01</span>
+        <span class="tag" style="margin-bottom: 1rem;">Analysis</span>
+        <h3 class="heading-4" style="margin-bottom: 0.5rem;">Theme Extraction</h3>
+        <p class="body-text-sm">Automatically surface recurring patterns and themes across hundreds of interview transcripts.</p>
+      </div>
+      <div class="mix-card">
+        <span class="mix-card-number">02</span>
+        <span class="tag" style="margin-bottom: 1rem;">Synthesis</span>
+        <h3 class="heading-4" style="margin-bottom: 0.5rem;">Insight Reports</h3>
+        <p class="body-text-sm">Generate publication-ready research summaries with supporting evidence and direct quotes.</p>
+      </div>
+      <div class="mix-card">
+        <span class="mix-card-number">03</span>
+        <span class="tag" style="margin-bottom: 1rem;">Collaboration</span>
+        <h3 class="heading-4" style="margin-bottom: 0.5rem;">Team Workspace</h3>
+        <p class="body-text-sm">Share findings, annotate together, and build a living knowledge base from your research.</p>
+      </div>
+    </div>
+
+    <!-- ===== PULL QUOTE ===== -->
+    <div class="pull-quote">
+      <blockquote>Good research is good listening &mdash; we just help you listen to a thousand voices at once.</blockquote>
+      <cite>Satori team</cite>
+    </div>
+
+    <!-- ===== DARK SECTION — uses components.css ===== -->
+    <div class="section-dark-block">
+      <div class="dark-eyebrow">
+        How it works
+      </div>
+      <h2 class="heading-2" style="margin-bottom: 0.75rem;">From raw interviews<br>to <em class="text-emphasis" style="color: white;">actionable insight.</em></h2>
+      <p class="body-text" style="color: rgba(255,255,255,0.5); max-width: 30rem;">Three steps, zero busywork. Upload your transcripts, let the AI find patterns, share what matters.</p>
+
+      <div class="dark-card-grid" style="margin-top: 2.5rem;">
+        <div class="dark-card">
+          <span class="tag" style="color: var(--color-accent); border-color: rgba(37,132,250,0.2); margin-bottom: 0.75rem;">Step 1</span>
+          <h4 class="heading-4" style="color: white; margin-top: 0.75rem;">Upload</h4>
+          <p class="body-text-sm" style="color: rgba(255,255,255,0.35); margin-top: 0.4rem;">Drop in transcripts, audio, or notes. We handle the rest.</p>
+        </div>
+        <div class="dark-card">
+          <span class="tag" style="color: var(--color-accent); border-color: rgba(37,132,250,0.2); margin-bottom: 0.75rem;">Step 2</span>
+          <h4 class="heading-4" style="color: white; margin-top: 0.75rem;">Analyze</h4>
+          <p class="body-text-sm" style="color: rgba(255,255,255,0.35); margin-top: 0.4rem;">AI extracts themes, codes data, and surfaces patterns in seconds.</p>
+        </div>
+        <div class="dark-card">
+          <span class="tag" style="color: var(--color-accent); border-color: rgba(37,132,250,0.2); margin-bottom: 0.75rem;">Step 3</span>
+          <h4 class="heading-4" style="color: white; margin-top: 0.75rem;">Share</h4>
+          <p class="body-text-sm" style="color: rgba(255,255,255,0.35); margin-top: 0.4rem;">Generate reports, export findings, or collaborate in real time.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FEATURE ROWS — uses components.css ===== -->
+    <div class="section-divider"><span>Features</span></div>
+
+    <div class="feature-row">
+      <div>
+        <div class="mix-feature-eyebrow">Analysis</div>
+        <h3 class="heading-3" style="margin-bottom: 0.75rem;">Find patterns you'd<br><em class="text-emphasis">never</em> see manually.</h3>
+        <p class="body-text">Our AI reads every transcript, codes every passage, and surfaces themes across your entire dataset — not just the ones you had time to read.</p>
+      </div>
+      <div class="feature-visual">
+        <span class="feature-visual-label">Screenshot</span>
+      </div>
+    </div>
+
+    <div class="feature-row feature-row-reverse">
+      <div>
+        <div class="mix-feature-eyebrow">Synthesis</div>
+        <h3 class="heading-3" style="margin-bottom: 0.75rem;">Reports that write<br><em class="text-emphasis">themselves.</em></h3>
+        <p class="body-text">Generate structured research summaries with supporting quotes, confidence levels, and export options — ready for stakeholders in minutes, not days.</p>
+      </div>
+      <div class="feature-visual">
+        <span class="feature-visual-label">Screenshot</span>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div>
+        <div class="mix-feature-eyebrow">Collaboration</div>
+        <h3 class="heading-3" style="margin-bottom: 0.75rem;">One workspace,<br><em class="text-emphasis">every</em> voice.</h3>
+        <p class="body-text">Share findings, tag teammates, annotate together. Build a living knowledge base that grows with every project.</p>
+      </div>
+      <div class="feature-visual">
+        <span class="feature-visual-label">Screenshot</span>
+      </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="mix-footer">
+      <div>
+        <div class="mix-footer-brand">Satori</div>
+        <p class="mix-footer-tagline">AI-powered qualitative research.<br>Zen, minimal, inviting.</p>
+      </div>
+      <div class="mix-footer-col">
+        <div class="mix-footer-col-title">Product</div>
+        <a href="#">Features</a>
+        <a href="#">Pricing</a>
+        <a href="#">Changelog</a>
+      </div>
+      <div class="mix-footer-col">
+        <div class="mix-footer-col-title">Resources</div>
+        <a href="#">Documentation</a>
+        <a href="#">Blog</a>
+        <a href="#">Community</a>
+      </div>
+      <div class="mix-footer-col">
+        <div class="mix-footer-col-title">Company</div>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy</a>
+      </div>
+      <div class="mix-footer-bottom">
+        &copy; 2026 Satori AI
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+</html>

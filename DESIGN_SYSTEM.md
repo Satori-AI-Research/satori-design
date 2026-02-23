@@ -142,15 +142,16 @@ Use for: landing pages, empty states, project detail pages - anywhere we want th
 ```
 - Subtle border (`border-gray-200`), rounded-xl
 - On hover: border goes accent blue
-- **Avoid heavy shadows** - we use outline style, not elevation
+- **No shadows on cards** - flat, outline style only. Shadows reserved for floating UI (modals, dropdowns)
 
 ### Form Inputs
 ```html
 <input class="input-field" placeholder="..." />
 ```
-- Minimal underline style (no borders, transparent bg)
-- Bottom border only, thickens + turns accent on focus
-- Labels: simple gray text above, NOT monospace uppercase (save that for section markers)
+- Conversational style — heading-size text (Poppins, 1.25rem, 500 weight)
+- Underline only, turns accent on focus
+- No separate labels — the placeholder or the question heading above IS the label
+- Inputs should feel like answering a question, not filling out a form
 
 **Boxed variant** (for date pickers, selects - where underline doesn't work):
 ```html

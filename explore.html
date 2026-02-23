@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Satori — Style Exploration v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700&family=Source+Code+Pro:wght@300;400;500;600&family=Playfair:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-body);
+      color: #e0e0e0;
+      -webkit-font-smoothing: antialiased;
+      background: #111;
+    }
+
+    /* ===== NAV ===== */
+    .explore-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(17, 17, 17, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .explore-nav-title {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      color: white;
+      white-space: nowrap;
+    }
+    .explore-nav-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .explore-nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      color: rgba(255,255,255,0.4);
+      transition: color 0.2s;
+    }
+    .explore-nav-links a:hover { color: white; }
+
+    /* ===== INTRO ===== */
+    .intro {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 2rem 2rem;
+      text-align: center;
+    }
+    .intro h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      color: white;
+    }
+    .intro p {
+      font-family: var(--font-body);
+      color: rgba(255,255,255,0.5);
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* ===== DIRECTION SECTIONS ===== */
+    .direction {
+      margin: 3rem 0;
+      scroll-margin-top: 4rem;
+    }
+    .direction-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      padding: 1.5rem 2rem 0.75rem;
+    }
+
+    /* ===== SHARED DEMO ===== */
+    .demo-hero {
+      padding: clamp(3rem, 8vw, 6rem) clamp(2rem, 5vw, 5rem);
+    }
+    .demo-cards-section {
+      padding: clamp(2.5rem, 5vw, 4rem) clamp(2rem, 5vw, 5rem);
+    }
+    .demo-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 1rem;
+    }
+    .demo-h1 {
+      font-weight: 700;
+      line-height: 1.0;
+    }
+    .demo-lead {
+      font-weight: 300;
+      line-height: 1.75;
+      max-width: 30rem;
+    }
+    .demo-btn {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.85rem 1.75rem;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s ease;
+    }
+    .demo-btn-ghost {
+      background: transparent;
+      border: 1px solid;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.85rem 1.75rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s ease;
+    }
+    .demo-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 768px) {
+      .demo-card-grid { grid-template-columns: 1fr; }
+    }
+    .demo-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .demo-card p {
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.65;
+    }
+    .demo-stat-row {
+      display: flex;
+      margin-top: 2.5rem;
+    }
+    .demo-stat {
+      flex: 1;
+      text-align: center;
+      padding: 1.5rem 1rem;
+    }
+    .demo-stat-value {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .demo-stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.25rem;
+    }
+    .demo-btns {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       A: DARK MONO — Axiom / Lawn / Shoo vibe
+       Terminal-forward, monospace everything, single pop color
+    ═══════════════════════════════════════════════════ */
+    .dark-mono .demo-hero {
+      background: #0d0d0d;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Chevron texture like Axiom */
+    .dark-mono .demo-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 55%;
+      height: 100%;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 28px,
+          rgba(37, 132, 250, 0.04) 28px,
+          rgba(37, 132, 250, 0.04) 29px
+        );
+      mask-image: linear-gradient(to left, rgba(0,0,0,0.6), transparent);
+      -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.6), transparent);
+      pointer-events: none;
+    }
+    .dark-mono .demo-eyebrow {
+      font-family: var(--font-mono);
+      color: rgba(255,255,255,0.3);
+    }
+    .dark-mono .demo-eyebrow span {
+      color: var(--color-accent);
+    }
+    .dark-mono .demo-h1 {
+      font-family: var(--font-mono);
+      font-size: clamp(2rem, 5.5vw, 3.5rem);
+      font-weight: 400;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: -0.02em;
+      position: relative;
+      z-index: 1;
+    }
+    .dark-mono .demo-lead {
+      font-family: var(--font-mono);
+      color: rgba(255,255,255,0.35);
+      font-size: 0.85rem;
+      font-weight: 400;
+      margin-top: 1.5rem;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+    }
+    .dark-mono .demo-btn {
+      background: #e05535;
+      color: white;
+      border-radius: var(--border-radius-sm);
+      font-weight: 500;
+      position: relative;
+      z-index: 1;
+    }
+    .dark-mono .demo-btn:hover {
+      background: #c94a2e;
+    }
+    .dark-mono .demo-btn-ghost {
+      border-color: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.6);
+      border-radius: var(--border-radius-sm);
+      position: relative;
+      z-index: 1;
+    }
+    .dark-mono .demo-btn-ghost:hover {
+      border-color: rgba(255,255,255,0.5);
+      color: white;
+    }
+    .dark-mono .demo-stat-row {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      z-index: 1;
+    }
+    .dark-mono .demo-stat {
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+    .dark-mono .demo-stat:last-child { border-right: none; }
+    .dark-mono .demo-stat-value {
+      font-family: var(--font-mono);
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: white;
+    }
+    .dark-mono .demo-stat-label {
+      font-family: var(--font-mono);
+      color: rgba(255,255,255,0.3);
+    }
+
+    .dark-mono .demo-cards-section {
+      background: #0d0d0d;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .dark-mono .demo-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 0;
+      padding: 1.75rem;
+      transition: border-color 0.3s;
+    }
+    .dark-mono .demo-card:hover {
+      border-color: rgba(255,255,255,0.15);
+    }
+    .dark-mono .demo-card h3 {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .dark-mono .demo-card p {
+      font-family: var(--font-mono);
+      color: rgba(255,255,255,0.35);
+      font-size: 0.75rem;
+      line-height: 1.8;
+    }
+    .dark-mono .demo-card-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #e05535;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       B: BOLD TYPE — Flower / Greptile vibe
+       White bg, massive heavy headings, accent-colored keyword
+    ═══════════════════════════════════════════════════ */
+    .bold-type .demo-hero {
+      background: white;
+      position: relative;
+    }
+    .bold-type .demo-eyebrow {
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+    .bold-type .demo-h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(3.5rem, 8vw, 6rem);
+      font-weight: 900;
+      color: #111;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+    }
+    .bold-type .demo-h1 em {
+      font-style: normal;
+      color: var(--color-accent);
+    }
+    .bold-type .demo-lead {
+      font-family: var(--font-body);
+      color: #666;
+      font-size: 1rem;
+      margin-top: 1.75rem;
+    }
+    .bold-type .demo-btn {
+      background: var(--color-accent);
+      color: white;
+      border-radius: var(--border-radius-sm);
+      font-weight: 500;
+    }
+    .bold-type .demo-btn:hover {
+      background: #1a6fd4;
+    }
+    .bold-type .demo-btn-ghost {
+      border-color: #111;
+      color: #111;
+      border-radius: var(--border-radius-sm);
+    }
+    .bold-type .demo-btn-ghost:hover {
+      background: #111;
+      color: white;
+    }
+    .bold-type .demo-stat-row {
+      border-top: 3px solid #111;
+    }
+    .bold-type .demo-stat {
+      border-right: 1px solid #e0e0e0;
+      text-align: left;
+      padding: 1.5rem 2rem 1.5rem 0;
+    }
+    .bold-type .demo-stat:last-child { border-right: none; }
+    .bold-type .demo-stat-value {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #111;
+    }
+    .bold-type .demo-stat-label {
+      color: #999;
+    }
+
+    .bold-type .demo-cards-section {
+      background: white;
+      border-top: 1px solid #eee;
+    }
+    .bold-type .demo-card {
+      background: white;
+      border: 2px solid #111;
+      border-radius: 0;
+      padding: 2rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .bold-type .demo-card:hover {
+      background: #111;
+    }
+    .bold-type .demo-card:hover h3,
+    .bold-type .demo-card:hover p,
+    .bold-type .demo-card:hover .demo-card-eyebrow {
+      color: white;
+    }
+    .bold-type .demo-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111;
+      transition: color 0.2s;
+    }
+    .bold-type .demo-card p {
+      color: #666;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .bold-type .demo-card-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-accent);
+      margin-bottom: 1rem;
+      display: block;
+      transition: color 0.2s;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       C: DEEP LUX — Render / Kernel vibe
+       Near-black, thin elegant type, purple accent, shapes
+    ═══════════════════════════════════════════════════ */
+    .deep-lux .demo-hero {
+      background: #0e0e12;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Scattered diamond shapes like Kernel */
+    .deep-lux .diamond-field {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .deep-lux .diamond {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: rgba(140, 100, 255, 0.2);
+      transform: rotate(45deg);
+    }
+    .deep-lux .demo-eyebrow {
+      color: rgba(140, 100, 255, 0.6);
+      font-weight: 500;
+    }
+    .deep-lux .demo-h1 {
+      font-family: var(--font-body);
+      font-size: clamp(2.75rem, 6.5vw, 5rem);
+      font-weight: 300;
+      color: white;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      position: relative;
+      z-index: 1;
+    }
+    .deep-lux .demo-h1 em {
+      font-style: normal;
+      color: #8c64ff;
+    }
+    .deep-lux .demo-lead {
+      font-family: var(--font-body);
+      color: rgba(255,255,255,0.4);
+      font-size: 1rem;
+      margin-top: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .deep-lux .demo-btn {
+      background: white;
+      color: #0e0e12;
+      border-radius: var(--border-radius-sm);
+      font-weight: 500;
+      position: relative;
+      z-index: 1;
+    }
+    .deep-lux .demo-btn:hover {
+      background: #8c64ff;
+      color: white;
+    }
+    .deep-lux .demo-btn-ghost {
+      border-color: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.5);
+      border-radius: var(--border-radius-sm);
+      position: relative;
+      z-index: 1;
+    }
+    .deep-lux .demo-btn-ghost:hover {
+      border-color: #8c64ff;
+      color: #8c64ff;
+    }
+    .deep-lux .demo-stat-row {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      z-index: 1;
+    }
+    .deep-lux .demo-stat {
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+    .deep-lux .demo-stat:last-child { border-right: none; }
+    .deep-lux .demo-stat-value {
+      font-family: var(--font-body);
+      font-size: 2rem;
+      font-weight: 300;
+      color: white;
+    }
+    .deep-lux .demo-stat-label {
+      color: rgba(255,255,255,0.25);
+    }
+
+    .deep-lux .demo-cards-section {
+      background: #0e0e12;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .deep-lux .demo-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 0.75rem;
+      padding: 2rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .deep-lux .demo-card:hover {
+      border-color: rgba(140, 100, 255, 0.3);
+      box-shadow: 0 0 40px rgba(140, 100, 255, 0.06);
+    }
+    .deep-lux .demo-card h3 {
+      font-weight: 500;
+      font-size: 1.1rem;
+      color: white;
+    }
+    .deep-lux .demo-card p {
+      color: rgba(255,255,255,0.35);
+      font-size: 0.85rem;
+    }
+    .deep-lux .demo-card-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #8c64ff;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    /* Organic blob like Kernel */
+    .deep-lux .accent-blob {
+      position: absolute;
+      bottom: -10%;
+      right: 5%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(140, 100, 255, 0.12), transparent 65%);
+      border-radius: 40% 60% 50% 50% / 50% 40% 60% 50%;
+      pointer-events: none;
+      filter: blur(40px);
+    }
+
+    /* ═══════════════════════════════════════════════════
+       D: SERIF + AIR — Fly.io / Avocation / Oz vibe
+       Light airy bg, serif italic emphasis, warm, organic
+    ═══════════════════════════════════════════════════ */
+    .serif-air .demo-hero {
+      background: #fafaf8;
+      position: relative;
+    }
+    .serif-air .demo-eyebrow {
+      color: var(--color-accent);
+      font-weight: 500;
+      letter-spacing: 0.25em;
+    }
+    .serif-air .demo-h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.75rem, 6.5vw, 4.5rem);
+      font-weight: 500;
+      color: #1a1a2e;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .serif-air .demo-h1 em {
+      font-family: "Playfair", Georgia, serif;
+      font-style: italic;
+      font-weight: 500;
+      text-decoration: underline;
+      text-decoration-color: rgba(37, 132, 250, 0.3);
+      text-underline-offset: 6px;
+      text-decoration-thickness: 2px;
+    }
+    .serif-air .demo-lead {
+      font-family: var(--font-body);
+      color: #777;
+      font-size: 1rem;
+      margin-top: 1.5rem;
+    }
+    .serif-air .demo-btn {
+      background: #1a1a2e;
+      color: white;
+      border-radius: var(--border-radius-full);
+      font-weight: 500;
+      padding: 0.85rem 2.25rem;
+    }
+    .serif-air .demo-btn:hover {
+      background: var(--color-accent);
+    }
+    .serif-air .demo-btn-ghost {
+      border-color: #1a1a2e;
+      color: #1a1a2e;
+      border-radius: var(--border-radius-full);
+      padding: 0.85rem 2.25rem;
+    }
+    .serif-air .demo-btn-ghost:hover {
+      background: #1a1a2e;
+      color: white;
+    }
+    .serif-air .demo-stat-row {
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+    .serif-air .demo-stat {
+      border-right: 1px solid rgba(0,0,0,0.08);
+    }
+    .serif-air .demo-stat:last-child { border-right: none; }
+    .serif-air .demo-stat-value {
+      font-family: "Playfair", Georgia, serif;
+      font-size: 2.25rem;
+      font-weight: 400;
+      color: #1a1a2e;
+    }
+    .serif-air .demo-stat-label {
+      color: #999;
+    }
+
+    .serif-air .demo-cards-section {
+      background: #f4f3f0;
+    }
+    .serif-air .demo-card {
+      background: white;
+      border: none;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .serif-air .demo-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    .serif-air .demo-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+    .serif-air .demo-card p {
+      color: #777;
+      font-size: 0.85rem;
+    }
+    .serif-air .demo-card-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-accent);
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .serif-air .demo-card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(37, 132, 250, 0.06);
+      color: var(--color-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    /* ===== FOOTER ===== */
+    .explore-footer {
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.25);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="explore-nav">
+    <span class="explore-nav-title">Style Exploration v2</span>
+    <div class="explore-nav-links">
+      <a href="#dark-mono">A. Dark Mono</a>
+      <a href="#bold-type">B. Bold Type</a>
+      <a href="#deep-lux">C. Deep Lux</a>
+      <a href="#serif-air">D. Serif + Air</a>
+    </div>
+  </nav>
+
+  <div class="intro">
+    <h1>Four new directions.</h1>
+    <p>Inspired by Axiom, Lawn, Flower, Greptile, Render, Kernel, Fly.io, Avocation. Same content, different personality.</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       A: DARK MONO
+  ═══════════════════════════════════════════════════ -->
+  <section class="direction dark-mono" id="dark-mono">
+    <div class="direction-label">A — Dark Mono &nbsp;/&nbsp; Axiom + Lawn + Shoo</div>
+    <div class="direction-demo">
+      <div class="demo-hero">
+        <div class="demo-eyebrow"><span>~/</span></div>
+        <h1 class="demo-h1">Qualitative research<br>re-invented for<br>modern teams</h1>
+        <p class="demo-lead">AI-powered analysis meets built-in synthesis<br>and team collaboration. Experience research<br>without compromise.</p>
+        <div class="demo-btns">
+          <button class="demo-btn">Book a demo &rarr;</button>
+          <button class="demo-btn-ghost">Sign up for free &rarr;</button>
+        </div>
+        <div class="demo-stat-row">
+          <div class="demo-stat">
+            <div class="demo-stat-value">12k+</div>
+            <div class="demo-stat-label">Interviews</div>
+          </div>
+          <div class="demo-stat">
+            <div class="demo-stat-value">4.2x</div>
+            <div class="demo-stat-label">Faster</div>
+          </div>
+          <div class="demo-stat">
+            <div class="demo-stat-value">98%</div>
+            <div class="demo-stat-label">Accuracy</div>
+          </div>
+          <div class="demo-stat">
+            <div class="demo-stat-value">0.3s</div>
+            <div class="demo-stat-label">Response</div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-cards-section">
+        <div class="demo-card-grid">
+          <div class="demo-card">
+            <span class="demo-card-eyebrow">01 &mdash; Analysis</span>
+            <h3>Theme Extraction</h3>
+            <p>Automatically surface recurring patterns across hundreds of interview transcripts.</p>
+          </div>
+          <div class="demo-card">
+            <span class="demo-card-eyebrow">02 &mdash; Synthesis</span>
+            <h3>Insight Reports</h3>
+            <p>Generate research summaries with supporting evidence and direct quotes.</p>
+          </div>
+          <div class="demo-card">
+            <span class="demo-card-eyebrow">03 &mdash; Collaboration</span>
+            <h3>Team Workspace</h3>
+            <p>Share findings, annotate together, and build a living knowledge base.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       B: BOLD TYPE
+  ═══════════════════════════════════════════════════ -->
+  <section class="direction bold-type" id="bold-type">
+    <div class="direction-label">B — Bold Type &nbsp;/&nbsp; Flower + Greptile</div>
+    <div class="direction-demo">
+      <div class="demo-hero">
+        <div class="demo-eyebrow">Satori AI</div>
+        <h1 class="demo-h1"><em>Satori</em> Research<br>That Actually<br>Scales.</h1>
+        <p class="demo-lead">AI-powered qualitative analysis that transforms hours of interviews into structured, actionable insight. No busywork.</p>
+        <div class="demo-btns">
+          <button class="demo-btn">Get started &rarr;</button>
+          <button class="demo-btn-ghost">See how it works</button>
+        </div>
+        <div class="demo-stat-row">
+          <div class="demo-stat">
+            <div class="demo-stat-value">12k+</div>
+            <div class="demo-stat-label">Interviews</div>
+          </div>
+          <div class="demo-stat">
+            <div class="demo-stat-value">4.2x</div>
+            <div class="demo-stat-label">Faster</div>
+          </div>
+          <div class="demo-stat">
+            <div class="demo-stat-value">98%</div>
+            <div class="demo-stat-label">Accuracy</div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-cards-section">
+        <div class="demo-card-grid">
+          <div class="demo-card">
+            <span class="demo-card-eyebrow">Analysis</span>
+            <h3>Theme Extraction</h3>
+            <p>Automatically surface recurring patterns and themes across hundreds of interview transcripts.</p>
+          </div>
+          <div class="demo-card">
+            <span class="demo-card-eyebrow">Synthesis</span>
+            <h3>Insight Reports</h3>
+            <p>Generate publication-ready research summaries with supporting evidence and direct quotes.</p>
+          </div>
+          <div class="demo-card">
+            <span class="demo-card-eyebrow">Collaboration</span>
+            <h3>Team Workspace</h3>
+            <p>Share findings, annotate together, and build a living knowledge base from your research.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       C: DEEP LUX
+  ═══════════════════════════════════════════════════ -->
+  <section class="direction deep-lux" id="deep-lux">
+    <div class="direction-label">C — Deep Lux &nbsp;/&nbsp; Render + Kernel</div>
+    <div class="direction-demo">
+      <div class="demo-hero">
+        <div class="accent-blob"></div>
+        <div class="diamond-field" id="diamond-field"></div>
+        <div class="demo-eyebrow">Satori AI</div>
+        <h1 class="demo-h1">Your fastest path<br>to <em>insight</em></h1>
+        <p class="demo-lead">Analyze, synthesize, and share qualitative research with unparalleled ease — from your first interview to your thousandth.</p>
+        <div class="demo-btns">
+          <button class="demo-btn">Get started &rarr;</button>
+          <button class="demo-btn-ghost">Watch demo</button>
+        </div>
+        <div class="demo-stat-row">
+          <div class="demo-stat">
+            <div class="demo-stat-value">12k+</div>
+            <div class="demo-stat-label">Interviews</div>
+          </div>
+          <div class="demo-stat">
+            <div class="demo-stat-value">4.2x</div>
+            <div class="demo-stat-label">Faster</div>
+          </div>
+          <div class="demo-stat">
+            <div class="demo-stat-value">98%</div>
+            <div class="demo-stat-label">Accuracy</div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-cards-section">
+        <div class="demo-card-grid">
+          <div class="demo-card">
+            <span class="demo-card-eyebrow">Analysis</span>
+            <h3>Theme Extraction</h3>
+            <p>Automatically surface recurring patterns and themes across hundreds of interview transcripts.</p>
+          </div>
+          <div class="demo-card">
+            <span class="demo-card-eyebrow">Synthesis</span>
+            <h3>Insight Reports</h3>
+            <p>Generate publication-ready research summaries with supporting evidence and direct quotes.</p>
+          </div>
+          <div class="demo-card">
+            <span class="demo-card-eyebrow">Collaboration</span>
+            <h3>Team Workspace</h3>
+            <p>Share findings, annotate together, and build a living knowledge base from your research.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       D: SERIF + AIR
+  ═══════════════════════════════════════════════════ -->
+  <section class="direction serif-air" id="serif-air">
+    <div class="direction-label">D — Serif + Air &nbsp;/&nbsp; Fly.io + Avocation + Oz</div>
+    <div class="direction-demo">
+      <div class="demo-hero">
+        <div class="demo-eyebrow">Satori AI</div>
+        <h1 class="demo-h1">Research with<br><em>clarity.</em></h1>
+        <p class="demo-lead">AI-powered qualitative analysis that transforms hours of interviews into structured, actionable insight.</p>
+        <div class="demo-btns">
+          <button class="demo-btn">Get started &rarr;</button>
+          <button class="demo-btn-ghost">Watch demo</button>
+        </div>
+        <div class="demo-stat-row">
+          <div class="demo-stat">
+            <div class="demo-stat-value">12k+</div>
+            <div class="demo-stat-label">Interviews</div>
+          </div>
+          <div class="demo-stat">
+            <div class="demo-stat-value">4.2x</div>
+            <div class="demo-stat-label">Faster</div>
+          </div>
+          <div class="demo-stat">
+            <div class="demo-stat-value">98%</div>
+            <div class="demo-stat-label">Accuracy</div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-cards-section">
+        <div class="demo-card-grid">
+          <div class="demo-card">
+            <div class="demo-card-icon">&#9675;</div>
+            <span class="demo-card-eyebrow">Analysis</span>
+            <h3>Theme Extraction</h3>
+            <p>Automatically surface recurring patterns and themes across hundreds of interview transcripts.</p>
+          </div>
+          <div class="demo-card">
+            <div class="demo-card-icon">&#9681;</div>
+            <span class="demo-card-eyebrow">Synthesis</span>
+            <h3>Insight Reports</h3>
+            <p>Generate publication-ready research summaries with supporting evidence and direct quotes.</p>
+          </div>
+          <div class="demo-card">
+            <div class="demo-card-icon">&#9673;</div>
+            <span class="demo-card-eyebrow">Collaboration</span>
+            <h3>Team Workspace</h3>
+            <p>Share findings, annotate together, and build a living knowledge base from your research.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="explore-footer">
+    Satori design system — style exploration v2
+  </footer>
+
+  <script>
+    // Generate scattered diamonds for Deep Lux
+    (function() {
+      var field = document.getElementById('diamond-field');
+      if (!field) return;
+      for (var i = 0; i < 40; i++) {
+        var d = document.createElement('div');
+        d.className = 'diamond';
+        d.style.top = (Math.random() * 100) + '%';
+        d.style.left = (Math.random() * 100) + '%';
+        d.style.opacity = (0.1 + Math.random() * 0.4).toFixed(2);
+        var size = 4 + Math.random() * 10;
+        d.style.width = size + 'px';
+        d.style.height = size + 'px';
+        field.appendChild(d);
+      }
+    })();
+  </script>
+
+</body>
+</html>
